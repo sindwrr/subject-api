@@ -4,6 +4,7 @@ import time
 from swagger_server.models.subject import Subject  # noqa: E501
 from swagger_server import util
 from swagger_server.metrics import *
+from swagger_server import logger
 
 
 def record_metrics(method, endpoint):
@@ -22,11 +23,13 @@ def record_metrics(method, endpoint):
 def subjects_get():  # noqa: E501
     observer = record_metrics("GET", "/subjects")
     try:
+        logger.info("Got a GET query")
         observer(status_code="200")
         return "GET query success!"
     except Exception as e:
         observer(status_code="500")
         ERROR_COUNT.labels(method="GET", endpoint="/subjects").inc()
+        logger.error(f"Failed to process the GET query: {str(e)}")
         return f"GET query fail! Exception: {str(e)}"
 
 
