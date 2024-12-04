@@ -1,5 +1,55 @@
-connexion >= 2.6.0
-connexion[swagger-ui] >= 2.6.0
-python_dateutil == 2.6.0
-setuptools >= 21.0.0
-swagger-ui-bundle >= 0.0.2
+anyio==4.6.2.post1
+asgiref==3.8.1
+attrs==24.2.0
+certifi==2024.8.30
+charset-normalizer==3.4.0
+click==8.1.7
+clickclick==20.10.2
+connexion==2.14.2
+Deprecated==1.2.15
+Flask==2.2.5
+googleapis-common-protos==1.56.1
+grpcio==1.68.1
+h11==0.14.0
+httpcore==1.0.6
+httpx==0.27.2
+idna==3.10
+importlib_metadata==8.5.0
+inflection==0.5.1
+itsdangerous==2.2.0
+Jinja2==3.1.4
+jsonschema==4.23.0
+jsonschema-specifications==2024.10.1
+MarkupSafe==3.0.1
+opentelemetry-api==1.28.2
+opentelemetry-exporter-jaeger==1.21.0
+opentelemetry-exporter-jaeger-proto-grpc==1.21.0
+opentelemetry-exporter-jaeger-thrift==1.21.0
+opentelemetry-exporter-otlp==1.28.2
+opentelemetry-exporter-otlp-proto-common==1.28.2
+opentelemetry-exporter-otlp-proto-grpc==1.28.2
+opentelemetry-exporter-otlp-proto-http==1.28.2
+opentelemetry-instrumentation==0.49b2
+opentelemetry-proto==1.28.2
+opentelemetry-sdk==1.28.2
+opentelemetry-semantic-conventions==0.49b2
+packaging==24.1
+prometheus_client==0.21.0
+protobuf==5.29.0
+python-dateutil==2.6.0
+python-multipart==0.0.12
+PyYAML==6.0.2
+referencing==0.35.1
+requests==2.32.3
+rpds-py==0.20.0
+setuptools==75.2.0
+six==1.16.0
+sniffio==1.3.1
+starlette==0.41.0
+swagger-ui-bundle==0.0.9
+thrift==0.21.0
+typing_extensions==4.12.2
+urllib3==2.2.3
+Werkzeug==2.2.3
+wrapt==1.17.0
+zipp==3.21.0

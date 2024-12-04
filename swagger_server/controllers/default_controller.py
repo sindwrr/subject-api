@@ -4,7 +4,11 @@ import time
 from swagger_server.models.subject import Subject  # noqa: E501
 from swagger_server import util
 from swagger_server.metrics import *
-from swagger_server import logger
+from swagger_server.logger import logger
+from opentelemetry import trace
+from swagger_server.controllers.tracing import tracer
+import time
+import random
 
 
 def record_metrics(method, endpoint):
@@ -19,18 +23,29 @@ def record_metrics(method, endpoint):
 
     return observe_latency
 
-
 def subjects_get():  # noqa: E501
     observer = record_metrics("GET", "/subjects")
-    try:
-        logger.info("Got a GET query")
-        observer(status_code="200")
-        return "GET query success!"
-    except Exception as e:
-        observer(status_code="500")
-        ERROR_COUNT.labels(method="GET", endpoint="/subjects").inc()
-        logger.error(f"Failed to process the GET query: {str(e)}")
-        return f"GET query fail! Exception: {str(e)}"
+    with tracer.start_as_current_span("subjects_get") as span:
+        try:
+            logger.info("Got a GET query")
+            span.set_attribute("http.method", "GET")
+            span.set_attribute("http.route", "/subjects")
+
+            delay = random.uniform(0.1, 2.0)
+            time.sleep(delay)
+            span.set_attribute("processing.delay", delay)
+            
+            observer(status_code="200")
+            span.set_status(trace.Status(trace.StatusCode.OK))
+            return "GET query success!"
+        except Exception as e:
+            span.record_exception(e)
+            span.set_status(trace.Status(trace.StatusCode.ERROR, str(e)))
+            
+            observer(status_code="500")
+            ERROR_COUNT.labels(method="GET", endpoint="/subjects").inc()
+            logger.error(f"Failed to process the GET query: {str(e)}")
+            return f"GET query fail! Exception: {str(e)}"
 
 
 def subjects_post(body):  # noqa: E501
