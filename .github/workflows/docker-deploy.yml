@@ -1,0 +1,25 @@
+name: Deploy Docker Container
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Image Tag'
+        default: 'latest'
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy Docker Container
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+          docker pull ${{ secrets.DOCKER_USERNAME }}/flask-app:${{ github.event.inputs.tag }}
+          docker stop flask-app || true
+          docker rm flask-app || true
+          docker run -d --name flask-app -p 80:80 ${{ secrets.DOCKER_USERNAME }}/flask-app:${{ github.event.inputs.tag }}
+        EOF
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
