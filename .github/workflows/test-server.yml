@@ -31,17 +31,17 @@ jobs:
           python3 -m swagger_server &
           echo $! > flask_pid
 
-          - name: Test GET query and response
-          run: |
-            sleep 5  # Give the server time to start
-            response_code=$(curl -s -o /dev/null -w "%{http_code}" -X GET http://localhost:8080/subjects)
-            if [ "$response_code" -eq 200 ]; then
-              echo "GET query succeeded with status code 200.";
-            else
-              echo "GET query failed with status code $response_code.";
-              kill $(cat flask_pid);
-              exit 1;
-            fi        
+      - name: Test GET query and response
+        run: |
+          sleep 5 
+          response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/subjects)
+          if [ "$response" -eq 200 ]; then
+            echo "GET query succeeded with status code 200.";
+          else
+            echo "GET query failed with status code $response.";
+            kill $(cat flask_pid);
+            exit 1;
+          fi
 
       - name: Clean up Flask process
         if: always()
