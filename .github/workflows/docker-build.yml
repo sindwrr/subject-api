@@ -21,4 +21,4 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t flask-app:${{ github.event.inputs.tag }} .
+        docker build --no-cache -t flask-app:${{ github.event.inputs.tag }} .
